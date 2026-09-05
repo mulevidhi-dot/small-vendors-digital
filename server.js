@@ -3,10 +3,10 @@ const express = require("express");
 const path = require("path");
 
 // Serve static HTML/CSS/JS files from the 'public' folder
-app.use(express.static(__dirname));
 const mysql = require("mysql2");
 
 const app = express();
+app.use(express.static(__dirname));
 const db = mysql.createConnection({
   host: "mysql-9f43400-gaurimulay79-89e.l.aivencloud.com",
   port: 28846,
