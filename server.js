@@ -25,34 +25,36 @@ db.connect(err => {
     console.log("Connected to MySQL database!");
 
     // Create the table automatically if it does not exist
-    const createTableQuery = `
-      CREATE TABLE IF NOT EXISTS survey_responses (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255),
-        phone VARCHAR(20),
-        shop_name VARCHAR(255),
-        digital_awareness VARCHAR(100),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
+   const createSurveyTable = `
+  CREATE TABLE IF NOT EXISTS survey_responses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accepts_digital VARCHAR(50),
+    uses_upi VARCHAR(50),
+    has_qr VARCHAR(50),
+    payment_problems VARCHAR(255),
+    aware_of_fraud VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`;
 
-    db.query(createTableQuery, (err) => {
-      if (err) {
-        console.error("Error creating table:", err.message);
-      } else {
-        console.log("Survey table is ready in Aiven!");
-      }
-    });
-  }
+db.query(createSurveyTable, (err) => {
+  if (err) console.error("Error creating survey table:", err.message);
+  else console.log("Survey table ready!");
+});  }
 });
 
 // Save Survey
-app.post("/submit-survey", (req, res) => {
-  const { name, phone, shop_name, digital_awareness } = req.body;
+// Save Survey
+app.post("/api/survey", (req, res) => {
+  const { accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud } = req.body;
 
-  const sql = "INSERT INTO survey_responses (name, phone, shop_name, digital_awareness) VALUES (?, ?, ?, ?)";
+  const sql = `
+    INSERT INTO survey_responses 
+    (accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud) 
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
-  db.query(sql, [name, phone, shop_name, digital_awareness], (err, result) => {
+  db.query(sql, [accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud], (err, result) => {
     if (err) {
       console.error("SQL Error:", err.message);
       return res.status(500).send("Error saving survey response");
