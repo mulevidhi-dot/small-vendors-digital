@@ -80,35 +80,35 @@
 </footer>
 
 <script>
-const form = document.getElementById("surveyForm");
-
-form.addEventListener("submit", async e => {
+  document.getElementById("surveyForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const data = {
-        digital_payment: document.getElementById("digital_payment").value,
-        upi: document.getElementById("upi").value,
-        qr_code: document.getElementById("qr_code").value,
-        problem: document.getElementById("problem").value,
-        fraud_awareness: document.getElementById("fraud_awareness").value
+    const formData = {
+      digital_payment: document.getElementById("digital_payment").value,
+      upi: document.getElementById("upi").value,
+      qr_code: document.getElementById("qr_code").value,
+      problem: document.getElementById("problem").value,
+      fraud_awareness: document.getElementById("fraud_awareness").value
     };
 
     try {
-        const response = await fetch("/api/survey", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+      const res = await fetch("/api/survey", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
 
-        const result = await response.json();
-        alert(result.message);
-
-        if (response.ok) form.reset();
-
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
+      if (res.ok) {
+        alert("Survey submitted successfully!");
+        document.getElementById("surveyForm").reset();
+      } else {
+        alert("Something went wrong on the server. Please try again.");
+      }
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("Network error. Please try again.");
     }
-});
+  });
 </script>
 
 </body>
