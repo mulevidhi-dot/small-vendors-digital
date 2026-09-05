@@ -1,5 +1,9 @@
 const PORT = process.env.PORT || 3000;
 const express = require("express");
+const path = require("path");
+
+// Serve static HTML/CSS/JS files from the 'public' folder
+app.use(express.static(__dirname));
 const mysql = require("mysql2");
 
 const app = express();
