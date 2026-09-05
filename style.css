@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7f6;
+    color: #333;
+}
+
+header, footer {
+    background: #2e7d32;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
+    background: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+main h2 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+main p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Forms */
+form {
+    background: white;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #2e7d32;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #256628;
+}
+
+/* Report */
+.report-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.report-card {
+    width: 220px;
+    padding: 25px;
+    background: white;
+    border-radius: 8px;
+}
+
+.report-card h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.report-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Safety */
+.safety-container {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+.safety-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.safety-card h3 {
+    color: #2e7d32;
+    margin-bottom: 8px;
+}
+
+.safety-card p {
+    font-size: 16px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    header {
+        padding: 15px 10px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    header p {
+        font-size: 14px;
+    }
+
+    nav {
+        padding: 10px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 8px 6px;
+        font-size: 14px;
+    }
+
+    main {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    main h2 {
+        font-size: 22px;
+    }
+
+    main p {
+        font-size: 16px;
+    }
+
+    form {
+        width: 100%;
+        padding: 20px;
+    }
+
+    input, select {
+        font-size: 16px;
+    }
+
+    .report-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .report-card {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .safety-card {
+        padding: 15px;
+    }
+
+    footer {
+        margin-top: 30px;
+        padding: 15px 10px;
+        font-size: 14px;
+    }
+}

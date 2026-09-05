@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Helping Small Vendors Go Digital</h1>
+    <p>Simple digital solutions for small businesses</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="vendor.html">Vendor Details</a>
+    <a href="survey.html">Survey</a>
+    <a href="records.html">Records</a>
+    <a href="report.html">Report</a>
+    <a href="safety.html">Safety</a>
+</nav>
+
+<main>
+    <h2>Business Report</h2>
+    <p>Here is a simple summary of your sales and expenses.</p>
+
+    <div class="report-container">
+        <div class="report-card">
+            <h3>Total Sales</h3>
+            <p id="totalSales">₹0</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Total Expenses</h3>
+            <p id="totalExpense">₹0</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Total Profit</h3>
+            <p id="totalProfit">₹0</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
+</footer>
+
+<script>
+async function loadReport() {
+    try {
+        const response = await fetch("/api/report");
+        const data = await response.json();
+
+        document.getElementById("totalSales").textContent = "₹" + data.totalSales;
+        document.getElementById("totalExpense").textContent = "₹" + data.totalExpense;
+        document.getElementById("totalProfit").textContent = "₹" + data.totalProfit;
+
+    } catch (error) {
+        console.error("Error loading report");
+    }
+}
+
+loadReport();
+</script>
+
+</body>
+</html>

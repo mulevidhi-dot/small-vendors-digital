@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Helping Small Vendors Go Digital</h1>
+    <p>Simple digital solutions for small businesses</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="vendor.html">Vendor Details</a>
+    <a href="survey.html">Survey</a>
+    <a href="records.html">Records</a>
+    <a href="report.html">Report</a>
+    <a href="safety.html">Safety</a>
+</nav>
+
+<main>
+    <h2>Vendor Details</h2>
+    <p>Please enter your basic information below.</p>
+
+    <form id="vendorForm">
+
+        <label>Vendor Name:</label>
+        <input type="text" id="name" required>
+
+        <label>Business Type:</label>
+        <select id="business" required>
+            <option value="">Select Business Type</option>
+            <option>Vegetable Seller</option>
+            <option>Fruit Seller</option>
+            <option>Tea Stall</option>
+            <option>Grocery Shop</option>
+            <option>Street Food Vendor</option>
+            <option>Other</option>
+        </select>
+
+        <label>Mobile Number:</label>
+        <input type="tel" id="phone" required>
+
+        <button type="submit">Save Details</button>
+    </form>
+</main>
+
+<footer>
+    <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
+</footer>
+
+<script>
+const form = document.getElementById("vendorForm");
+
+form.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        business_type: document.getElementById("business").value,
+        phone: document.getElementById("phone").value
+    };
+
+    const response = await fetch("/api/vendors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    alert(result.message);
+
+    if (response.ok) form.reset();
+});
+</script>
+
+
+</body>
+</html>

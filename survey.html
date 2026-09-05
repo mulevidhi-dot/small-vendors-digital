@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Survey</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Helping Small Vendors Go Digital</h1>
+    <p>Simple digital solutions for small businesses</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="vendor.html">Vendor Details</a>
+    <a href="survey.html">Survey</a>
+    <a href="records.html">Records</a>
+    <a href="report.html">Report</a>
+    <a href="safety.html">Safety</a>
+</nav>
+
+<main>
+    <h2>Digital Awareness Survey</h2>
+    <p>Please answer the following questions.</p>
+
+    <form id="surveyForm">
+
+        <label>Do you accept digital payments?</label>
+        <select id="digital_payment" required>
+            <option value="">Select an option</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Sometimes</option>
+        </select>
+
+        <label>Do you use UPI?</label>
+        <select id="upi" required>
+            <option value="">Select an option</option>
+            <option>Yes, regularly</option>
+            <option>Yes, sometimes</option>
+            <option>No</option>
+        </select>
+
+        <label>Do you have a QR code for receiving payments?</label>
+        <select id="qr_code" required>
+            <option value="">Select an option</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+
+        <label>What problem do you face with digital payments?</label>
+        <select id="problem" required>
+            <option value="">Select an option</option>
+            <option>Network problems</option>
+            <option>Payment pending</option>
+            <option>Checking payment confirmation</option>
+            <option>Fear of fraud</option>
+            <option>No major problems</option>
+        </select>
+
+        <label>Are you aware of online payment fraud?</label>
+        <select id="fraud_awareness" required>
+            <option value="">Select an option</option>
+            <option>Yes</option>
+            <option>Somewhat</option>
+            <option>No</option>
+        </select>
+
+        <button type="submit">Submit Survey</button>
+
+    </form>
+</main>
+
+<footer>
+    <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
+</footer>
+
+<script>
+const form = document.getElementById("surveyForm");
+
+form.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const data = {
+        digital_payment: document.getElementById("digital_payment").value,
+        upi: document.getElementById("upi").value,
+        qr_code: document.getElementById("qr_code").value,
+        problem: document.getElementById("problem").value,
+        fraud_awareness: document.getElementById("fraud_awareness").value
+    };
+
+    try {
+        const response = await fetch("/api/survey", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+        if (response.ok) form.reset();
+
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    }
+});
+</script>
+
+</body>
+</html>
