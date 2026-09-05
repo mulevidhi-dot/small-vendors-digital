@@ -24,43 +24,55 @@ db.connect(err => {
   } else {
     console.log("Connected to MySQL database!");
 
-    // Create the table automatically if it does not exist
-  // Table setup in server.js
-// Drop old table to update schema, then recreate
-const setupDatabase = `
-  DROP TABLE IF EXISTS survey_responses;
+    // Drop old table to clear outdated column structure, then create new schema
+    const resetTableQuery = `
+      DROP TABLE IF EXISTS survey_responses;
+      CREATE TABLE survey_responses (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        digital_payment VARCHAR(50),
+        upi VARCHAR(50),
+        qr_code VARCHAR(50),
+        problem VARCHAR(255),
+        fraud_awareness VARCHAR(50),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
 
-  CREATE TABLE survey_responses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    digital_payment VARCHAR(50),
-    upi VARCHAR(50),
-    qr_code VARCHAR(50),
-    problem VARCHAR(255),
-    fraud_awareness VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
-`;
+    // Note: ensure multipleStatements: true is enabled in mysql connection if running multiple statements,
+    // OR run them as separate queries:
+    db.query("DROP TABLE IF EXISTS survey_responses", (err) => {
+      if (err) return console.error("Error dropping table:", err.message);
 
-db.query(setupDatabase, (err) => {
-  if (err) {
-    console.error("Error setting up table:", err.message);
-  } else {
-    console.log("survey_responses table schema updated in Aiven!");
+      const createTableQuery = `
+        CREATE TABLE survey_responses (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          digital_payment VARCHAR(50),
+          upi VARCHAR(50),
+          qr_code VARCHAR(50),
+          problem VARCHAR(255),
+          fraud_awareness VARCHAR(50),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `;
+
+      db.query(createTableQuery, (err) => {
+        if (err) console.error("Error creating table:", err.message);
+        else console.log("Survey table freshly recreated with correct columns!");
+      });
+    });
   }
 });
-
 // Save Survey
 // Save Survey
 app.post("/api/survey", (req, res) => {
-  const { accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud } = req.body;
+  const { digital_payment, upi, qr_code, problem, fraud_awareness } = req.body;
 
   const sql = `
-    INSERT INTO survey_responses 
-    (accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud) 
+    INSERT INTO survey_responses (digital_payment, upi, qr_code, problem, fraud_awareness)
     VALUES (?, ?, ?, ?, ?)
   `;
 
-  db.query(sql, [accepts_digital, uses_upi, has_qr, payment_problems, aware_of_fraud], (err, result) => {
+  db.query(sql, [digital_payment, upi, qr_code, problem, fraud_awareness], (err, result) => {
     if (err) {
       console.error("SQL Error:", err.message);
       return res.status(500).send("Error saving survey response");
