@@ -57,28 +57,37 @@
 <script>
 const form = document.getElementById("vendorForm");
 
-form.addEventListener("submit", async e => {
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Property names now match server.js req.body parameters
     const data = {
-        name: document.getElementById("name").value,
+        vendor_name: document.getElementById("name").value,
         business_type: document.getElementById("business").value,
-        phone: document.getElementById("phone").value
+        mobile_number: document.getElementById("phone").value
     };
 
-    const response = await fetch("/api/vendors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-    });
+    try {
+        // Updated URL to /api/vendor (singular)
+        const response = await fetch("/api/vendor", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
 
-    const result = await response.json();
-    alert(result.message);
+        // Read plain text response instead of JSON
+        const resultText = await response.text();
+        alert(resultText);
 
-    if (response.ok) form.reset();
+        if (response.ok) {
+            form.reset();
+        }
+    } catch (err) {
+        console.error("Submit error:", err);
+        alert("Failed to submit. Please try again.");
+    }
 });
 </script>
-
 
 </body>
 </html>
