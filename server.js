@@ -63,6 +63,22 @@ db.connect(err => {
       if (err) console.error("Error creating vendor table:", err.message);
       else console.log("Vendor details table ready!");
     });
+
+    // 3. Auto-Create Records Table
+    const createRecordsTable = `
+      CREATE TABLE IF NOT EXISTS records (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        sale DECIMAL(10, 2),
+        expense DECIMAL(10, 2),
+        record_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    db.query(createRecordsTable, (err) => {
+      if (err) console.error("Error creating records table:", err.message);
+      else console.log("Records table ready!");
+    });
   }
 });
 
@@ -112,7 +128,10 @@ app.post("/api/records", (req, res) => {
     "INSERT INTO records (sale, expense, record_date) VALUES (?, ?, ?)",
     [sale, expense, record_date],
     err => {
-      if (err) return res.status(500).json({ message: "Error saving record" });
+      if (err) {
+        console.error("SQL Records Error:", err.message);
+        return res.status(500).json({ message: "Error saving record" });
+      }
       res.json({ message: "Record saved successfully!" });
     }
   );
