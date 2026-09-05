@@ -7,6 +7,8 @@ const mysql = require("mysql2");
 
 const app = express();
 app.use(express.static(__dirname));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const db = mysql.createConnection({
   host: "mysql-9f43400-gaurimulay79-89e.l.aivencloud.com",
   port: 28846,
