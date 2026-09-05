@@ -25,22 +25,36 @@ db.connect(err => {
     console.log("Connected to MySQL database!");
 
     // Create the table automatically if it does not exist
-   const createSurveyTable = `
+  // Table setup in server.js
+const createSurveyTable = `
   CREATE TABLE IF NOT EXISTS survey_responses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    accepts_digital VARCHAR(50),
-    uses_upi VARCHAR(50),
-    has_qr VARCHAR(50),
-    payment_problems VARCHAR(255),
-    aware_of_fraud VARCHAR(50),
+    digital_payment VARCHAR(50),
+    upi VARCHAR(50),
+    qr_code VARCHAR(50),
+    problem VARCHAR(255),
+    fraud_awareness VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )
 `;
+db.query(createSurveyTable);
 
-db.query(createSurveyTable, (err) => {
-  if (err) console.error("Error creating survey table:", err.message);
-  else console.log("Survey table ready!");
-});  }
+// Route in server.js
+app.post("/api/survey", (req, res) => {
+  const { digital_payment, upi, qr_code, problem, fraud_awareness } = req.body;
+
+  const sql = `
+    INSERT INTO survey_responses (digital_payment, upi, qr_code, problem, fraud_awareness)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [digital_payment, upi, qr_code, problem, fraud_awareness], (err, result) => {
+    if (err) {
+      console.error("SQL Error:", err.message);
+      return res.status(500).send("Error saving survey response");
+    }
+    res.status(200).send("Survey submitted successfully!");
+  });
 });
 
 // Save Survey
