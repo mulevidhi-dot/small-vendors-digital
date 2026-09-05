@@ -19,38 +19,47 @@ const db = mysql.createConnection({
 });
 
 db.connect(err => {
-    if (err) console.log("Database error:", err.message);
-    else console.log("Connected to MySQL database!");
-});
+  if (err) {
+    console.error("Database connection error:", err.message);
+  } else {
+    console.log("Connected to MySQL database!");
 
-// Save Vendor
-app.post("/api/vendors", (req, res) => {
-    const { name, business_type, phone } = req.body;
+    // Create the table automatically if it does not exist
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS survey_responses (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        phone VARCHAR(20),
+        shop_name VARCHAR(255),
+        digital_awareness VARCHAR(100),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
 
-    db.query(
-        "INSERT INTO vendors (name, business_type, phone) VALUES (?, ?, ?)",
-        [name, business_type, phone],
-        err => {
-            if (err) return res.status(500).json({ message: "Error saving vendor details" });
-            res.json({ message: "Vendor details saved successfully!" });
-        }
-    );
+    db.query(createTableQuery, (err) => {
+      if (err) {
+        console.error("Error creating table:", err.message);
+      } else {
+        console.log("Survey table is ready in Aiven!");
+      }
+    });
+  }
 });
 
 // Save Survey
-app.post("/api/survey", (req, res) => {
-    const { digital_payment, upi, qr_code, problem, fraud_awareness } = req.body;
+app.post("/submit-survey", (req, res) => {
+  const { name, phone, shop_name, digital_awareness } = req.body;
 
-    db.query(
-        "INSERT INTO survey_responses VALUES (NULL, ?, ?, ?, ?, ?)",
-        [digital_payment, upi, qr_code, problem, fraud_awareness],
-        err => {
-            if (err) return res.status(500).json({ message: "Error saving survey response" });
-            res.json({ message: "Survey submitted successfully!" });
-        }
-    );
+  const sql = "INSERT INTO survey_responses (name, phone, shop_name, digital_awareness) VALUES (?, ?, ?, ?)";
+
+  db.query(sql, [name, phone, shop_name, digital_awareness], (err, result) => {
+    if (err) {
+      console.error("SQL Error:", err.message);
+      return res.status(500).send("Error saving survey response");
+    }
+    res.status(200).send("Survey submitted successfully!");
+  });
 });
-
 // Save Record
 app.post("/api/records", (req, res) => {
     const { sale, expense, record_date } = req.body;
