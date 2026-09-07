@@ -15,7 +15,7 @@ const db = mysql.createConnection({
   port: 28846,
   user: "avnadmin",
   password: process.env.DB_PASSWORD,
-  database: "defaultdb",
+  database: process.env.DB_NAME || "small_vendors_db",
   ssl: { rejectUnauthorized: false }
 });
 
