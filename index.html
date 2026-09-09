@@ -15,12 +15,14 @@
 </header>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="vendor.html">Vendor Details</a>
-    <a href="survey.html">Survey</a>
-    <a href="records.html">Records</a>
-    <a href="report.html">Report</a>
-    <a href="safety.html">Safety</a>
+  <a href="index.html">Home</a>
+  <a href="vendor.html">Vendor Details</a>
+  <a href="survey.html">Survey</a>
+  <a href="records.html">Records</a>
+  <a href="report.html">Report</a>
+  <a href="safety.html">Safety</a>
+  <a href="#upi-section">UPI QR Code</a>
+  <a href="#whatsapp-section">WhatsApp Receipt</a>
 </nav>
 
 <main>
@@ -37,7 +39,7 @@
     </p>
 </main>
 <!-- UPI QR & WhatsApp Receipt Features -->
-  <div class="card my-4 p-4 shadow-sm">
+<div id="upi-section" class="card my-4 p-4 shadow-sm">
     <h3>UPI QR Code Generator</h3>
     <div class="mb-3">
       <label class="form-label">Enter UPI ID (e.g., vendor@upi):</label>
@@ -51,7 +53,7 @@
     <div id="qrcode" class="mt-3 mb-4 d-flex justify-content-center"></div>
   </div>
 
-  <div class="card my-4 p-4 shadow-sm">
+  <div id="whatsapp-section" class="card my-4 p-4 shadow-sm">
     <h3>WhatsApp Receipt Generator</h3>
     <div class="mb-3">
       <label class="form-label">Customer Mobile Number:</label>
