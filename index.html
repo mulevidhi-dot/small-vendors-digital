@@ -36,7 +36,64 @@
         manage their daily sales and expenses in a simple way.
     </p>
 </main>
+<!-- UPI QR & WhatsApp Receipt Features -->
+  <div class="card my-4 p-4 shadow-sm">
+    <h3>UPI QR Code Generator</h3>
+    <div class="mb-3">
+      <label class="form-label">Enter UPI ID (e.g., vendor@upi):</label>
+      <input type="text" id="upiId" class="form-control" placeholder="e.g. 9876543210@paytm">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Amount (Optional):</label>
+      <input type="number" id="upiAmount" class="form-control" placeholder="Enter amount">
+    </div>
+    <button class="btn btn-primary" onclick="generateQRCode()">Generate QR Code</button>
+    <div id="qrcode" class="mt-3 text-center"></div>
+  </div>
 
+  <div class="card my-4 p-4 shadow-sm">
+    <h3>WhatsApp Receipt Generator</h3>
+    <div class="mb-3">
+      <label class="form-label">Customer Mobile Number:</label>
+      <input type="text" id="custPhone" class="form-control" placeholder="10-digit mobile number">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Item / Service Details:</label>
+      <input type="text" id="itemDetails" class="form-control" placeholder="e.g. 1kg Tomatoes, 2kg Potatoes">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Total Amount (₹):</label>
+      <input type="number" id="billAmount" class="form-control" placeholder="Total bill amount">
+    </div>
+    <button class="btn btn-success" onclick="sendWhatsAppReceipt()">Send Receipt via WhatsApp</button>
+  </div>
+
+  <!-- QR Code Library & Function Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    function generateQRCode() {
+      const upiId = document.getElementById('upiId').value.trim();
+      const amount = document.getElementById('upiAmount').value.trim();
+      const qrContainer = document.getElementById('qrcode');
+      qrContainer.innerHTML = "";
+      if (!upiId) return alert("Please enter a valid UPI ID.");
+      let upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Vendor&cu=INR`;
+      if (amount) upiString += `&am=${encodeURIComponent(amount)}`;
+      new QRCode(qrContainer, { text: upiString, width: 200, height: 200 });
+    }
+
+    function sendWhatsAppReceipt() {
+      const phone = document.getElementById('custPhone').value.trim();
+      const items = document.getElementById('itemDetails').value.trim();
+      const amount = document.getElementById('billAmount').value.trim();
+      if (!items || !amount) return alert("Please enter item details and bill amount.");
+      const message = `*--- DIGITAL RECEIPT ---*\n*Items:* ${items}\n*Total Amount:* ₹${amount}\nThank you for shopping with us! 🙏`;
+      const encodedMessage = encodeURIComponent(message);
+      const formattedPhone = phone ? (phone.startsWith("91") ? phone : `91${phone}`) : "";
+      const whatsappUrl = formattedPhone ? `https://wa.me/${formattedPhone}?text=${encodedMessage}` : `https://wa.me/?text=${encodedMessage}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  </script>
 <footer>
     <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
 </footer>
