@@ -27,20 +27,21 @@
     <h2>Sales and Expense Records</h2>
     <p>Enter your daily sales and expenses below.</p>
 
-    <form id="recordsForm">
-
-        <label>Today's Sales Amount (₹):</label>
-        <input type="number" id="sale" min="0" required>
-
-        <label>Today's Expense Amount (₹):</label>
-        <input type="number" id="expense" min="0" required>
-
-        <label>Date:</label>
-        <input type="date" id="record_date" required>
-
-        <button type="submit">Save Record</button>
-
-    </form>
+   <form onsubmit="saveRecord(event)">
+  <div class="mb-3">
+    <label class="form-label">Today's Sales Amount (₹):</label>
+    <input type="number" id="salesInput" class="form-control" placeholder="Enter sales" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Today's Expense Amount (₹):</label>
+    <input type="number" id="expenseInput" class="form-control" placeholder="Enter expenses" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Date:</label>
+    <input type="date" id="dateInput" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-success">Save Record</button>
+</form>
 </main>
 
 <footer>
