@@ -77,6 +77,28 @@ form.addEventListener("submit", async e => {
     }
 });
 </script>
+    <script>
+  function saveRecord(event) {
+    event.preventDefault(); // Prevents page reload
+
+    const sales = parseFloat(document.getElementById('salesInput').value) || 0;
+    const expenses = parseFloat(document.getElementById('expenseInput').value) || 0;
+
+    // Fetch existing totals from browser memory (or start at 0)
+    let currentSales = parseFloat(localStorage.getItem('totalSales')) || 0;
+    let currentExpenses = parseFloat(localStorage.getItem('totalExpenses')) || 0;
+
+    // Add new values to running totals
+    localStorage.setItem('totalSales', (currentSales + sales).toFixed(2));
+    localStorage.setItem('totalExpenses', (currentExpenses + expenses).toFixed(2));
+
+    alert('Record saved successfully! Your report will now reflect these numbers.');
+
+    // Reset input fields
+    document.getElementById('salesInput').value = '';
+    document.getElementById('expenseInput').value = '';
+  }
+</script>
 
 </body>
 </html>
