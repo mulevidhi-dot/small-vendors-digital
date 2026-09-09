@@ -49,23 +49,31 @@
     <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
 </footer>
 
-<script>
-async function loadReport() {
-    try {
-        const response = await fetch("/api/report");
-        const data = await response.json();
+</footer>
 
-        document.getElementById("totalSales").textContent = "₹" + data.totalSales;
-        document.getElementById("totalExpense").textContent = "₹" + data.totalExpense;
-        document.getElementById("totalProfit").textContent = "₹" + data.totalProfit;
+    <!-- Place the JavaScript logic right here before </body> -->
+    <script>
+      function saveRecord(event) {
+        event.preventDefault();
 
-    } catch (error) {
-        console.error("Error loading report");
-    }
-}
+        const sales = parseFloat(document.getElementById('salesInput').value) || 0;
+        const expenses = parseFloat(document.getElementById('expenseInput').value) || 0;
 
-loadReport();
-</script>
+        let currentSales = parseFloat(localStorage.getItem('totalSales')) || 0;
+        let currentExpenses = parseFloat(localStorage.getItem('totalExpenses')) || 0;
+
+        localStorage.setItem('totalSales', (currentSales + sales).toFixed(2));
+        localStorage.setItem('totalExpenses', (currentExpenses + expenses).toFixed(2));
+
+        alert('Record saved successfully!');
+
+        document.getElementById('salesInput').value = '';
+        document.getElementById('expenseInput').value = '';
+      }
+    </script>
+
+</body>
+</html>
 
 </body>
 </html>
