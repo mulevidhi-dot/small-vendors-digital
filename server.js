@@ -170,12 +170,16 @@ app.post("/api/transactions", (req, res) => {
 // Get Report
 app.get("/api/report", (req, res) => {
   db.query(
-    "SELECT SUM(sale) AS \"totalSales\", SUM(expense) AS \"totalExpense\" FROM records",
+    "SELECT COALESCE(SUM(sale), 0) AS totalsales, COALESCE(SUM(expense), 0) AS totalexpense FROM records",
     (err, result) => {
-      if (err) return res.status(500).json({ message: "Error getting report" });
+      if (err) {
+        console.error("Report Error:", err.message);
+        return res.status(500).json({ message: "Error getting report" });
+      }
 
-      const sales = parseFloat(result.rows[0].totalSales) || 0;
-      const expense = parseFloat(result.rows[0].totalExpense) || 0;
+      const row = result.rows[0] || {};
+      const sales = parseFloat(row.totalsales || row.totalSales || 0);
+      const expense = parseFloat(row.totalexpense || row.totalExpense || 0);
 
       res.json({
         totalSales: sales,
