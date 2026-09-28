@@ -27,37 +27,37 @@
     <h2>Sales and Expense Records</h2>
     <p>Enter your daily sales and expenses below.</p>
 
-   <form onsubmit="saveRecord(event)">
-  <div class="mb-3">
-    <label class="form-label">Today's Sales Amount (₹):</label>
-    <input type="number" id="salesInput" class="form-control" placeholder="Enter sales" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Today's Expense Amount (₹):</label>
-    <input type="number" id="expenseInput" class="form-control" placeholder="Enter expenses" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Date:</label>
-    <input type="date" id="dateInput" class="form-control" required>
-  </div>
-  <button type="submit" class="btn btn-success">Save Record</button>
-</form>
+    <form id="recordsForm">
+        <div class="mb-3">
+            <label class="form-label">Today's Sales Amount (₹):</label>
+            <input type="number" step="0.01" id="salesInput" class="form-control" placeholder="Enter sales" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Today's Expense Amount (₹):</label>
+            <input type="number" step="0.01" id="expenseInput" class="form-control" placeholder="Enter expenses" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Date:</label>
+            <input type="date" id="dateInput" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save Record</button>
+    </form>
 </main>
 
 <footer>
-    <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
+    <p>SYIT CEP | Helping Small Vendors Go Digital</p>
 </footer>
 
 <script>
 const form = document.getElementById("recordsForm");
 
-form.addEventListener("submit", async e => {
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const data = {
-        sale: document.getElementById("sale").value,
-        expense: document.getElementById("expense").value,
-        record_date: document.getElementById("record_date").value
+        sale: parseFloat(document.getElementById("salesInput").value) || 0,
+        expense: parseFloat(document.getElementById("expenseInput").value) || 0,
+        record_date: document.getElementById("dateInput").value
     };
 
     try {
@@ -68,36 +68,18 @@ form.addEventListener("submit", async e => {
         });
 
         const result = await response.json();
-        alert(result.message);
-
-        if (response.ok) form.reset();
-
+        
+        if (response.ok) {
+            alert(result.message || "Record saved successfully!");
+            form.reset();
+        } else {
+            alert("Error: " + (result.message || "Failed to save record"));
+        }
     } catch (error) {
+        console.error("Error submitting record:", error);
         alert("Something went wrong. Please try again.");
     }
 });
-</script>
-    <script>
-  function saveRecord(event) {
-    event.preventDefault(); // Prevents page reload
-
-    const sales = parseFloat(document.getElementById('salesInput').value) || 0;
-    const expenses = parseFloat(document.getElementById('expenseInput').value) || 0;
-
-    // Fetch existing totals from browser memory (or start at 0)
-    let currentSales = parseFloat(localStorage.getItem('totalSales')) || 0;
-    let currentExpenses = parseFloat(localStorage.getItem('totalExpenses')) || 0;
-
-    // Add new values to running totals
-    localStorage.setItem('totalSales', (currentSales + sales).toFixed(2));
-    localStorage.setItem('totalExpenses', (currentExpenses + expenses).toFixed(2));
-
-    alert('Record saved successfully! Your report will now reflect these numbers.');
-
-    // Reset input fields
-    document.getElementById('salesInput').value = '';
-    document.getElementById('expenseInput').value = '';
-  }
 </script>
 
 </body>
