@@ -46,34 +46,30 @@
 </main>
 
 <footer>
-    <p>TYIT CEP  | Helping Small Vendors Go Digital</p>
+    <p>SYIT CEP | Helping Small Vendors Go Digital</p>
 </footer>
 
-</footer>
+<script>
+async function loadReport() {
+    try {
+        const response = await fetch("/api/report");
+        const data = await response.json();
 
-    <!-- Place the JavaScript logic right here before </body> -->
-    <script>
-      function saveRecord(event) {
-        event.preventDefault();
+        if (response.ok) {
+            document.getElementById("totalSales").innerText = "₹" + (data.totalSales || 0);
+            document.getElementById("totalExpense").innerText = "₹" + (data.totalExpense || 0);
+            document.getElementById("totalProfit").innerText = "₹" + (data.totalProfit || 0);
+        } else {
+            console.error("Failed to load backend report");
+        }
+    } catch (error) {
+        console.error("Error fetching report:", error);
+    }
+}
 
-        const sales = parseFloat(document.getElementById('salesInput').value) || 0;
-        const expenses = parseFloat(document.getElementById('expenseInput').value) || 0;
-
-        let currentSales = parseFloat(localStorage.getItem('totalSales')) || 0;
-        let currentExpenses = parseFloat(localStorage.getItem('totalExpenses')) || 0;
-
-        localStorage.setItem('totalSales', (currentSales + sales).toFixed(2));
-        localStorage.setItem('totalExpenses', (currentExpenses + expenses).toFixed(2));
-
-        alert('Record saved successfully!');
-
-        document.getElementById('salesInput').value = '';
-        document.getElementById('expenseInput').value = '';
-      }
-    </script>
-
-</body>
-</html>
+// Automatically fetch report from database when page opens
+window.onload = loadReport;
+</script>
 
 </body>
 </html>
